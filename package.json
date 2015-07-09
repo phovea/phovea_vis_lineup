@@ -1,0 +1,37 @@
+{
+  "name": "caleydo_vis_lineup",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "caleydo_web": "*"
+  },
+  "caleydo": {
+    "plugins": {
+      "web": [
+        {
+          "type": "vis",
+          "id": "caleydo-vis-lineup",
+          "name": "LineUp",
+          "sizeDependsOnDataDimension": [
+            false,
+            true
+          ],
+          "filter": "table"
+        }
+      ]
+    },
+    "dependencies": {
+      "web": {
+        "d3": "~3.5.5",
+        "lineupjs": "https://github.com/Caleydo/lineup.js.git"
+      }
+    },
+    "requirejs-config": {
+      "shim": {
+        "lineupjs": [
+          "css!${baseUrl}/lineupjs/css/style"
+        ]
+      }
+    }
+  }
+}
+
