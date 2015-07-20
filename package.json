@@ -1,6 +1,9 @@
 {
   "name": "caleydo_vis_lineup",
   "version": "0.0.1",
+  "dependencies": {
+    "caleydo_web": "*"
+  },
   "peerDependencies": {
     "caleydo_web": "*"
   },
@@ -37,4 +40,3 @@
     "registry": "http://dev.caleydo.org/nexus/content/repositories/caleydo-web/"
   }
 }
-
