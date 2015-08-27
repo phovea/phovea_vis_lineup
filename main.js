@@ -39,7 +39,7 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_core/d3
 
     var columns = deriveColumns(this.data.cols());
     // bind data to chart
-    C.all([this.data.objects(), this.data.rowIds()]).then(function (promise) {
+    Promise.all([this.data.objects(), this.data.rowIds()]).then(function (promise) {
       var arr = promise[0];
       var rowIds = promise[1].dim(0).asList();
       var data = arr.map(function (obj, i) {
