@@ -51,26 +51,33 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
         }, obj);
       });
       that.provider = LineUpJS.createLocalStorage(data, columns);
+      var dump = that.option('dump');
+      if (dump) {
+        that.provider.restore(dump);
+      }
       that.lineup = LineUpJS.create(that.provider, $div, that.option('lineup'));
-      that.lineup.on('hoverChanged', function(row) {
-        var id = row ? row._id : null;
-        if (row) {
-          that.data.select('hovered', [id]);
-        } else {
+      that.lineup.on('hoverChanged', function(data_index) {
+        var id = null;
+        if (data_index < 0) {
           that.data.clear('hovered');
-        }
-        that.fire('hovered', row ? row._id : null);
-      });
-      that.lineup.on('selectionChanged', function(row) {
-        var id = row ? row._id : null;
-        if (row) {
-          that.data.select('selected', [id]);
         } else {
-          that.data.clear('selected');
+          id = data[data_index]._id;
+          that.data.select('hovered', [id]);
         }
-        that.fire('selected', row ? row._id : null);
+        that.fire('hovered', id);
+      });
+      that.lineup.on('selectionChanged', function(data_index) {
+        var id = null;
+        if (data_index < 0) {
+          that.data.clear('selected');
+        } else {
+          id = data[data_index]._id;
+          that.data.select('selected', [id]);
+        }
+        that.fire('selected', id);
       });
       that.provider.deriveDefault();
+      that.lineup.update();
       that.markReady();
     });
     return $div;
