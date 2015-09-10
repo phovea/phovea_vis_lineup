@@ -3,7 +3,7 @@
  */
 /* global define */
 
-define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, LineUpJS, d3utils) {
+define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, LineUpJS, d3utils) {
   "use strict";
   function deriveColumns(columns) {
     return columns.map(function (col) {
@@ -13,8 +13,11 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3ut
       var val = col.desc.value;
       switch (val.type) {
       case 'string':
-      case 'categorical':
         r.type = 'string';
+        break;
+      case 'categorical':
+        r.type = 'categorical';
+        r.categories = col.desc.categories;
         break;
       case 'real':
       case 'int':
@@ -33,7 +36,7 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3ut
     var dim = data.dim;
     return [ Math.min(dim[1] * 100, 1000), Math.min(dim[0] * 20, 600)];
   }, function build($parent) {
-    var $div = $parent.append('div').classed('lineup', true);
+    var $div = $parent;
 
     var that = this;
 
@@ -47,8 +50,9 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3ut
           _id : rowIds[i]
         }, obj);
       });
-      that.lineup = LineUpJS.create(LineUpJS.createLocalStorage(data, columns, that.option('layout'), '_id'), $div, that.option('lineup'));
-      that.lineup.on('hover', function(row) {
+      that.provider = LineUpJS.createLocalStorage(data, columns);
+      that.lineup = LineUpJS.create(that.provider, $div, that.option('lineup'));
+      that.lineup.on('hoverChanged', function(row) {
         var id = row ? row._id : null;
         if (row) {
           that.data.select('hovered', [id]);
@@ -57,7 +61,7 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3ut
         }
         that.fire('hovered', row ? row._id : null);
       });
-      that.lineup.on('selected', function(row) {
+      that.lineup.on('selectionChanged', function(row) {
         var id = row ? row._id : null;
         if (row) {
           that.data.select('selected', [id]);
@@ -66,7 +70,7 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjs', '../caleydo_d3/d3ut
         }
         that.fire('selected', row ? row._id : null);
       });
-      that.lineup.startVis();
+      that.provider.deriveDefault();
       that.markReady();
     });
     return $div;
