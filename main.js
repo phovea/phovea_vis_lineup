@@ -99,6 +99,11 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
       this.options.scale = scale;
       this.options.rotate = rotate;
       return new_;
+    },
+    update: function() {
+      if (this.lineup) {
+        this.lineup.update();
+      }
     }
   });
 
