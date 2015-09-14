@@ -66,15 +66,13 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
         }
         that.fire('hovered', id);
       });
-      that.lineup.on('selectionChanged', function(data_index) {
-        var id = null;
-        if (data_index < 0) {
+      that.lineup.on('multiSelectionChanged', function(data_indices) {
+        if (data_indices.length === 0) {
           that.data.clear('selected');
         } else {
-          id = data[data_index]._id;
-          that.data.select('selected', [id]);
+          that.data.select('selected', data_indices.map(function(index) { return data[index]._id; }));
         }
-        that.fire('selected', id);
+        that.fire('selected', data_indices.length === 0 ? null : data[data_indices[0]]._id);
       });
       that.provider.deriveDefault();
       that.lineup.update();
