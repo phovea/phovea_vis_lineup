@@ -10,6 +10,9 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
       var r = {
         column : col.desc.name
       };
+      if (col.desc.color) {
+        r.color = col.desc.color;
+      }
       var val = col.desc.value;
       switch (val.type) {
       case 'string':
