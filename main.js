@@ -44,6 +44,15 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
     var that = this;
 
     var columns = deriveColumns(this.data.cols());
+
+
+    var listener = function(event, type, act) {
+      if (that.lineup) {
+        that.lineup.data.setSelection(act.dim(0).asList());
+      }
+    };
+    this.data.on('select', listener);
+
     // bind data to chart
     Promise.all([this.data.objects(), this.data.rowIds()]).then(function (promise) {
       var arr = promise[0];
@@ -79,8 +88,12 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
       });
       that.provider.deriveDefault();
       that.lineup.update();
+      that.data.selections().then(function(act) {
+        listener(act);
+      });
       that.markReady();
     });
+
     return $div;
   }, {
     transform: function (scale, rotate) {
