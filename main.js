@@ -47,7 +47,7 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
 
 
     var listener = function(event, type, act) {
-      if (that.lineup) {
+      if (that.lineup && type === 'selected') {
         that.lineup.data.setSelection(act.dim(0).asList());
       }
     };
