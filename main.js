@@ -39,7 +39,7 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
     var dim = data.dim;
     return [ Math.min(dim[1] * 100, 1000), Math.min(dim[0] * 20, 600)];
   }, function build($parent) {
-    var $div = $parent;
+    var $div = $parent.append('div');
 
     var that = this;
 
@@ -52,6 +52,9 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
       }
     };
     this.data.on('select', listener);
+    C.onDOMNodeRemoved($div.node(), function () {
+      that.data.off('select', listener);
+    });
 
     // bind data to chart
     Promise.all([this.data.objects(), this.data.rowIds()]).then(function (promise) {
@@ -90,7 +93,7 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
       that.lineup.update();
       that.data.selections().then(function(act) {
         if (!act.isNone) {
-          listener(null, null, act);
+          listener(null, 'selected', act);
         }
       });
       that.markReady();
