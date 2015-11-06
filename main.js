@@ -89,7 +89,9 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
       that.provider.deriveDefault();
       that.lineup.update();
       that.data.selections().then(function(act) {
-        listener(act);
+        if (!act.isNone) {
+          listener(null, null, act);
+        }
       });
       that.markReady();
     });
