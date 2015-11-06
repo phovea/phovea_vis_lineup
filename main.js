@@ -3,7 +3,7 @@
  */
 /* global define */
 
-define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, LineUpJS, d3utils) {
+define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'lineupjsN', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, idtypes, LineUpJS, d3utils) {
   "use strict";
   function deriveColumns(columns) {
     return columns.map(function (col) {
@@ -71,20 +71,20 @@ define(['exports', 'd3', '../caleydo_core/main', 'lineupjsN', '../caleydo_d3/d3u
       that.lineup.on('hoverChanged', function(data_index) {
         var id = null;
         if (data_index < 0) {
-          that.data.clear('hovered');
+          that.data.clear(idtypes.hoverSelectionType);
         } else {
           id = data[data_index]._id;
-          that.data.select('hovered', [id]);
+          that.data.select(idtypes.hoverSelectionType, [id]);
         }
-        that.fire('hovered', id);
+        that.fire(idtypes.hoverSelectionType, id);
       });
       that.lineup.on('multiSelectionChanged', function(data_indices) {
         if (data_indices.length === 0) {
-          that.data.clear('selected');
+          that.data.clear(idtypes.defaultSelectionType);
         } else {
-          that.data.select('selected', data_indices.map(function(index) { return data[index]._id; }));
+          that.data.select(idtypes.defaultSelectionType, data_indices.map(function(index) { return data[index]._id; }));
         }
-        that.fire('selected', data_indices.length === 0 ? null : data[data_indices[0]]._id);
+        that.fire(idtypes.defaultSelectionType, data_indices.length === 0 ? null : data[data_indices[0]]._id);
       });
       that.provider.deriveDefault();
       that.lineup.update();
