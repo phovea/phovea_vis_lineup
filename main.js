@@ -12,6 +12,8 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
       };
       if (col.desc.color) {
         r.color = col.desc.color;
+      } else if (col.desc.cssClass) {
+        r.cssClass = col.desc.cssClass;
       }
       var val = col.desc.value;
       switch (val.type) {
