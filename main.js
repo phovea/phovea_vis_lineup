@@ -15,6 +15,13 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
       } else if (col.desc.cssClass) {
         r.cssClass = col.desc.cssClass;
       }
+
+      //use magic word to find extra attributes
+      if (col.desc.lineup) {
+        Object.keys(col.desc.lineup).forEach(function(k) {
+          r[k] = col.desc.lineup[k];
+        });
+      }
       var val = col.desc.value;
       switch (val.type) {
       case 'string':
