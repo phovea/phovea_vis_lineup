@@ -54,15 +54,22 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
 
     var columns = deriveColumns(this.data.cols());
 
-
-    var listener = function(event, type, act) {
-      if (that.lineup && type === 'selected') {
+    var listener = function (event, act) {
+      if (that.lineup) {
         that.lineup.data.setSelection(act.dim(0).asList());
       }
     };
-    this.data.on('select', listener);
+    that.data.on('select-selected', listener);
     C.onDOMNodeRemoved($div.node(), function () {
-      that.data.off('select', listener);
+      that.data.off('select-selected', listener);
+    });var listener = function (event, act) {
+      if (that.lineup) {
+        that.lineup.data.setSelection(act.dim(0).asList());
+      }
+    };
+    that.data.on('select-selected', listener);
+    C.onDOMNodeRemoved($div.node(), function () {
+      that.data.off('select-selected', listener);
     });
 
     // bind data to chart
@@ -86,7 +93,7 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
           that.data.clear(idtypes.hoverSelectionType);
         } else {
           id = data[data_index]._id;
-          that.data.select(idtypes.hoverSelectionType, [id]);
+          that.data.select(idtypes.hoverSelectionType, [data_index]);
         }
         that.fire(idtypes.hoverSelectionType, id);
       });
@@ -94,17 +101,20 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
         if (data_indices.length === 0) {
           that.data.clear(idtypes.defaultSelectionType);
         } else {
-          that.data.select(idtypes.defaultSelectionType, data_indices.map(function(index) { return data[index]._id; }));
+          that.data.select(idtypes.defaultSelectionType, data_indices);
         }
         that.fire(idtypes.defaultSelectionType, data_indices.length === 0 ? null : data[data_indices[0]]._id);
       });
       that.provider.deriveDefault();
       that.lineup.update();
+
+
       that.data.selections().then(function(act) {
         if (!act.isNone) {
-          listener(null, 'selected', act);
+          listener(null, act);
         }
       });
+
       that.markReady();
     });
 
