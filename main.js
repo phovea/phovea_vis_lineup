@@ -5,6 +5,7 @@
 
 define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'lineupjsN', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, idtypes, LineUpJS, d3utils) {
   "use strict";
+
   function deriveColumns(columns) {
     return columns.map(function (col) {
       var r = {
@@ -44,15 +45,22 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
     });
   }
 
-  exports.LineUp = d3utils.defineVis('LineUp', {}, function (data) {
+  exports.LineUp = d3utils.defineVis('LineUp', {
+    rowNames: false
+  }, function (data) {
     var dim = data.dim;
     return [ Math.min(dim[1] * 100, 1000), Math.min(dim[0] * 20, 600)];
   }, function build($parent) {
     var $div = $parent.append('div');
 
     var that = this;
+    var rowNames = this.option('rowNames', false) === true;
 
     var columns = deriveColumns(this.data.cols());
+
+    if (rowNames) {
+      columns.unshift({ type: 'string', label: 'Row', column: '_name'});
+    }
 
     var listener = function (event, act) {
       if (that.lineup) {
@@ -73,11 +81,14 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
     });
 
     // bind data to chart
-    Promise.all([this.data.objects(), this.data.rowIds()]).then(function (promise) {
+    Promise.all([this.data.objects(), this.data.rowIds(), rowNames ? this.data.rows() : Promise.resolve([])]).then(function (promise) {
       var arr = promise[0];
       var rowIds = promise[1].dim(0).asList();
+      var names = promise[2];
+
       var data = arr.map(function (obj, i) {
         return C.mixin({
+          _name : names[i],
           _id : rowIds[i]
         }, obj);
       });
