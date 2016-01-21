@@ -26,13 +26,13 @@
     },
     "dependencies": {
       "web": {
-        "lineupjsN": "https://github.com/sgratzl/lineup.js.git"
+        "lineupjs": "https://github.com/Caleydo/lineup.js.git"
       }
     },
     "requirejs-config": {
       "shim": {
-        "lineupjsN": [
-          "css!${baseUrl}/lineupjsN/dist/style"
+        "lineupjs": [
+          "css!${baseUrl}/lineupjs/dist/style"
         ]
       }
     }

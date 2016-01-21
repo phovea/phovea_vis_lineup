@@ -3,7 +3,7 @@
  */
 /* global define */
 
-define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'lineupjsN', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, idtypes, LineUpJS, d3utils) {
+define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'lineupjs', '../caleydo_d3/d3util', 'font-awesome', 'css!./style'], function (exports, d3, C, idtypes, LineUpJS, d3utils) {
   "use strict";
 
   function deriveColumns(columns) {
