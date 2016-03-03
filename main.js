@@ -117,9 +117,14 @@ define(['exports', 'd3', '../caleydo_core/main', '../caleydo_core/idtype', 'line
         that.fire(idtypes.defaultSelectionType, data_indices.length === 0 ? null : data[data_indices[0]]._id);
       });
       that.provider.deriveDefault();
+
+
+      var sortCriteria = that.option('sortCriteria');
+      if (sortCriteria) {
+        that.lineup.sortBy(function(d) { return d.label === sortCriteria.column}, sortCriteria.asc);
+      }
+
       that.lineup.update();
-
-
       that.data.selections().then(function(act) {
         if (!act.isNone) {
           listener(null, act);
