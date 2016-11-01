@@ -4,10 +4,11 @@
     "name": "phovea_vis_lineup",
     "author": "The Caleydo Team",
     "githubAccount": "phovea",
-    "libraries": [],
+    "libraries": [
+      "font-awesome"
+    ],
     "modules": [
-      "phovea_core",
-      "phovea_d3"
+      "phovea_core"
     ],
     "extensions": [
       {
@@ -25,7 +26,7 @@
       }
     ],
     "libraryAliases": {
-      "d3": "d3/d3"
+      "font-awesome": "font-awesome"
     },
     "entries": "./index.js",
     "ignores": [],

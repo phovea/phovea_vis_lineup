@@ -1,10 +1,17 @@
+/* *****************************************************************************
+ * Caleydo - Visualization for Molecular Biology - http://caleydo.org
+ * Copyright (c) The Caleydo Team. All rights reserved.
+ * Licensed under the new BSD license, available at http://caleydo.org/license
+ **************************************************************************** */
+
 import './style.scss';
+import 'lineupjs/src/style.scss';
+import 'font-awesome/scss/font-awesome.scss';
 import {onDOMNodeRemoved, mixin} from 'phovea_core/src';
 import {ITable} from 'phovea_core/src/table';
 import {Range} from 'phovea_core/src/range';
 import {defaultSelectionType, hoverSelectionType} from 'phovea_core/src/idtype';
 import {AVisInstance, IVisInstance, assignVis} from 'phovea_core/src/vis';
-import {create as createLineUp, createLocalStorage} from 'lineupjs/src/index';
 import LineUpImpl from 'lineupjs/src/lineup';
 import {LocalDataProvider} from 'lineupjs/src/provider';
 
