@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "phovea_core": "github:sgratzl/phovea_core",
-    "phovea_d3": "github:sgratzl/phovea_d3"
+    "lineupjs": "github:Caleydo/lineup.js#feature_146_react"
   },
   "name": "phovea_vis_lineup",
   "description": "A visualization plugin for tables using LineUp.js",
