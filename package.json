@@ -4,8 +4,8 @@
     "src",
     "index.js",
     "phovea.js",
-    "build",
-    "assets"
+    "phovea_registry.js",
+    "build"
   ],
   "engines": {
     "npm": ">= 3",
@@ -28,7 +28,9 @@
     "watch": "webpack --watch",
     "release:major": "npm version major && npm publish && git push --follow-tags",
     "release:minor": "npm version minor && npm publish && git push --follow-tags",
-    "release:patch": "npm version patch && npm publish && git push --follow-tags"
+    "release:patch": "npm version patch && npm publish && git push --follow-tags",
+    "predist": "npm run build",
+    "dist": "mkdirp dist && cd build && tar cvzf ../dist/phovea_vis_lineup.tar.gz *"
   },
   "devDependencies": {
     "@types/jasmine": "^2.5.35",
@@ -57,7 +59,8 @@
     "typescript": "^2.0.3",
     "url-loader": "^0.5.7",
     "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.9"
+    "webpack-dev-server": "^2.1.0-beta.9",
+    "mkdirp": "^0.5.1"
   },
   "dependencies": {
     "phovea_core": "github:sgratzl/phovea_core",

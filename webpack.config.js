@@ -8,6 +8,7 @@ const {libraryAliases, modules, entries, ignores, type} = require('./.yo-rc.json
 const resolve = require('path').resolve;
 const pkg = require('./package.json');
 const webpack = require('webpack');
+const exists = require('fs').existsSync;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const year = (new Date()).getFullYear();
@@ -92,6 +93,9 @@ function testPhoveaModules(modules) {
   };
 }
 
+// use ueber registry file if available
+const registryFile = exists(resolve(__dirname, '..', 'phovea_registry.js')) ? '../phovea_registry.js' : './phovea_registry.js';
+
 /**
  * inject the registry to be included
  * @param entry
@@ -100,11 +104,11 @@ function testPhoveaModules(modules) {
 function injectRegistry(entry) {
   //build also the registry
   if (typeof entry === 'string') {
-    return ['./phovea_registry.js'].concat(entry);
+    return [registryFile].concat(entry);
   } else {
     var transformed = {};
     Object.keys(entry).forEach((eentry) => {
-      transformed[eentry] = ['./phovea_registry.js'].concat(entry[eentry]);
+      transformed[eentry] = [registryFile].concat(entry[eentry]);
     });
     return transformed;
   }
@@ -119,7 +123,7 @@ function generateWebpack(options) {
     output: {
       path: resolve(__dirname, 'build'),
       filename: (options.name || (pkg.name + (options.bundle ? '_bundle' : ''))) + (options.min ? '.min' : '') + '.js',
-      publicPath: './'
+      publicPath: '' //no public path = relative
     },
     resolve: {
       // Add `.ts` and `.tsx` as a resolvable extension.
@@ -189,7 +193,7 @@ function generateWebpack(options) {
     });
     //ingore phovea module registry calls
     (options.modules || []).forEach(function (m) {
-      base.module.loaders.push({test: new RegExp('.*[\\\\/]' + m + '[\\\\/]phovea.js'), loader: 'null'}); //use null loader
+      base.module.loaders.push({test: new RegExp('.*[\\\\/]' + m + '[\\\\/]phovea_registry.js'), loader: 'null'}); //use null loader
     });
 
     //extract the included css file to own file

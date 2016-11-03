@@ -10,6 +10,6 @@ import {register} from 'phovea_core/src/plugin';
  * build a registry by registering all phovea modules
  */
 //other modules
-register(require('phovea_core/phovea.js'));
+import 'phovea_core/phovea_registry.js';
 //self
-register(require('./phovea.js'));
+register('phovea_vis_lineup',require('./phovea.js'));
