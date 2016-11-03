@@ -63,7 +63,7 @@
     "mkdirp": "^0.5.1"
   },
   "dependencies": {
-    "phovea_core": "github:sgratzl/phovea_core",
+    "phovea_core": "github:phovea/phovea_core",
     "font-awesome": "^4.6.3",
     "lineupjs": "github:Caleydo/lineup.js#feature_146_react"
   },
