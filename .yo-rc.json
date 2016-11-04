@@ -1,0 +1,35 @@
+{
+  "generator-phovea": {
+    "type": "lib",
+    "name": "phovea_vis_lineup",
+    "author": "The Caleydo Team",
+    "githubAccount": "phovea",
+    "libraries": [
+      "font-awesome"
+    ],
+    "modules": [
+      "phovea_core"
+    ],
+    "extensions": [
+      {
+        "type": "vis",
+        "id": "caleydo-vis-lineup",
+        "module": "",
+        "extras": {
+          "name": "LineUp",
+          "sizeDependsOnDataDimension": [
+            false,
+            true
+          ],
+          "filter": "table"
+        }
+      }
+    ],
+    "libraryAliases": {
+      "font-awesome": "font-awesome"
+    },
+    "entries": "./index.js",
+    "ignores": [],
+    "today": "Tue, 01 Nov 2016 17:17:37 GMT"
+  }
+}
