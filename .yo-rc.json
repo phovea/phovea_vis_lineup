@@ -5,7 +5,9 @@
     "author": "The Caleydo Team",
     "githubAccount": "phovea",
     "libraries": [
-      "font-awesome"
+      "font-awesome",
+      "lineupjs",
+      "d3"
     ],
     "modules": [
       "phovea_core"
@@ -26,7 +28,9 @@
       }
     ],
     "libraryAliases": {
-      "font-awesome": "font-awesome"
+      "font-awesome": "font-awesome",
+      "lineupjs": "lineupjs",
+      "d3": "d3/d3"
     },
     "entries": "./index.js",
     "ignores": [],
