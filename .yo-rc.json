@@ -15,7 +15,7 @@
     "extensions": [
       {
         "type": "vis",
-        "id": "caleydo-vis-lineup",
+        "id": "phovea-vis-lineup",
         "module": "",
         "extras": {
           "name": "LineUp",
