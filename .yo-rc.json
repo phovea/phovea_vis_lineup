@@ -28,12 +28,15 @@
       }
     ],
     "libraryAliases": {
-      "font-awesome": "font-awesome",
-      "lineupjs": "lineupjs",
       "d3": "d3/d3"
     },
     "entries": "./index.js",
     "ignores": [],
-    "today": "Tue, 01 Nov 2016 17:17:37 GMT"
+    "today": "Tue, 01 Nov 2016 17:17:37 GMT",
+    "libraryExternals": [
+      "font-awesome",
+      "lineupjs",
+      "d3"
+    ]
   }
 }
