@@ -8,43 +8,48 @@ import './style.scss';
 import 'lineupjs/src/style.scss';
 import 'font-awesome/scss/font-awesome.scss';
 import {onDOMNodeRemoved, mixin} from 'phovea_core/src';
-import {ITable} from 'phovea_core/src/table';
 import {Range} from 'phovea_core/src/range';
+import {ITable} from 'phovea_core/src/table/ITable';
+import {
+  VALUE_TYPE_CATEGORICAL, VALUE_TYPE_INT, VALUE_TYPE_REAL, VALUE_TYPE_STRING,
+  ICategoricalValueTypeDesc, INumberValueTypeDesc
+} from 'phovea_core/src/datatype';
 import {defaultSelectionType, hoverSelectionType} from 'phovea_core/src/idtype';
-import {AVisInstance, IVisInstance, assignVis} from 'phovea_core/src/vis';
+import {AVisInstance, IVisInstance, assignVis, IVisInstanceOptions} from 'phovea_core/src/vis';
 import LineUpImpl from 'lineupjs/src/lineup';
+import {IColumnDesc} from 'lineupjs/src/model';
 import {LocalDataProvider} from 'lineupjs/src/provider';
+import {IAnyVector} from 'phovea_core/src/vector';
 
-function deriveColumns(columns: any[]) {
+function deriveColumns(columns: IAnyVector[]) {
   return columns.map((col) => {
-    var r: any = {
+    const desc : any = col.desc;
+    let r: any = {
       column: col.desc.name
     };
-    if (col.desc.color) {
-      r.color = col.desc.color;
-    } else if (col.desc.cssClass) {
-      r.cssClass = col.desc.cssClass;
+    if (desc.color) {
+      r.color = desc.color;
+    } else if (desc.cssClass) {
+      r.cssClass = desc.cssClass;
     }
 
     //use magic word to find extra attributes
-    if (col.desc.lineup) {
-      Object.keys(col.desc.lineup).forEach((k) => {
-        r[k] = col.desc.lineup[k];
-      });
+    if (desc.lineup) {
+      Object.assign(r, desc.lineup);
     }
-    var val = col.desc.value;
+    const val = col.desc.value;
     switch (val.type) {
-      case 'string':
+      case VALUE_TYPE_STRING:
         r.type = 'string';
         break;
-      case 'categorical':
+      case VALUE_TYPE_CATEGORICAL:
         r.type = 'categorical';
-        r.categories = col.desc.categories;
+        r.categories = (<ICategoricalValueTypeDesc>val).categories;
         break;
-      case 'real':
-      case 'int':
+      case VALUE_TYPE_INT:
+      case VALUE_TYPE_REAL:
         r.type = 'number';
-        r.domain = val.range;
+        r.domain = (<INumberValueTypeDesc>val).range;
         break;
       default:
         r.type = 'string';
@@ -54,27 +59,24 @@ function deriveColumns(columns: any[]) {
   });
 }
 
-export interface ILineUpOptions {
+export interface ILineUpOptions extends IVisInstanceOptions {
   rowNames?: boolean;
   dump?: any;
   lineup?: any;
 
   sortCriteria?: {column: string, asc: boolean};
-
-  scale?: number[];
-  rotate?: number;
 }
 
 export class LineUp extends AVisInstance implements IVisInstance {
-  private options: ILineUpOptions = {
+  private readonly options: ILineUpOptions = {
     rowNames: false
   };
 
-  private _node: HTMLDivElement;
+  private readonly _node: HTMLDivElement;
   private lineup: LineUpImpl;
   private provider: LocalDataProvider;
 
-  constructor(public data: ITable, parent: Element, options: ILineUpOptions = {}) {
+  constructor(public readonly data: ITable, parent: Element, options: ILineUpOptions = {}) {
     super();
     mixin(this.options, options);
 
@@ -131,7 +133,7 @@ export class LineUp extends AVisInstance implements IVisInstance {
 
       this.lineup = new LineUpImpl(div, this.provider, this.options.lineup);
       this.lineup.on('hoverChanged', (data_index) => {
-        var id = null;
+        let id = null;
         if (data_index < 0) {
           this.data.clear(hoverSelectionType);
         } else {
@@ -169,7 +171,7 @@ export class LineUp extends AVisInstance implements IVisInstance {
     return div;
   }
 
-  transform(scale?: number[], rotate?: number) {
+  transform(scale?: [number, number], rotate?: number) {
     const bak = {
       scale: this.options.scale || [1, 1],
       rotate: this.options.rotate || 0
@@ -194,4 +196,4 @@ export class LineUp extends AVisInstance implements IVisInstance {
 
 export function create(data: ITable, parent: Element, options?: ILineUpOptions) {
   return new LineUp(data, parent, options);
-};
+}
