@@ -16,14 +16,13 @@ import {
 } from 'phovea_core/src/datatype';
 import {defaultSelectionType, hoverSelectionType} from 'phovea_core/src/idtype';
 import {AVisInstance, IVisInstance, assignVis, IVisInstanceOptions} from 'phovea_core/src/vis';
-import {INumberValueTypeDesc, ICategoricalValueTypeDesc, VALUE_TYPE_INT, VALUE_TYPE_REAL, VALUE_TYPE_CATEGORICAL} from 'phovea_core/src/datatype';
 import LineUpImpl,{ILineUpConfig} from 'lineupjs/src/lineup';
-import {IColumnDesc} from 'lineupjs/src/model';
 import {LocalDataProvider} from 'lineupjs/src/provider';
 import {IColumnDesc} from 'lineupjs/src/model/Column';
 
 function deriveColumns(columns: any[]): IColumnDesc[] {
   return columns.map((col) => {
+    const desc: any = col.desc;
     let r: any = {
       column: col.desc.name
     };
