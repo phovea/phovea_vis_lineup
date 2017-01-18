@@ -38,7 +38,6 @@ function deriveColumns(columns: any[]): IColumnDesc[] {
     }
     const val = col.desc.value;
     switch (val.type) {
-      case VALUE_TYPE_STRING:
       case VALUE_TYPE_CATEGORICAL:
         r.type = 'categorical';
         r.categories = (<ICategoricalValueTypeDesc>(val)).categories;
