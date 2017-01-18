@@ -11,7 +11,7 @@ import {onDOMNodeRemoved, mixin} from 'phovea_core/src';
 import {Range} from 'phovea_core/src/range';
 import {ITable} from 'phovea_core/src/table/ITable';
 import {
-  VALUE_TYPE_CATEGORICAL, VALUE_TYPE_INT, VALUE_TYPE_REAL, VALUE_TYPE_STRING,
+  VALUE_TYPE_CATEGORICAL, VALUE_TYPE_INT, VALUE_TYPE_REAL,
   ICategoricalValueTypeDesc, INumberValueTypeDesc
 } from 'phovea_core/src/datatype';
 import {defaultSelectionType, hoverSelectionType} from 'phovea_core/src/idtype';
