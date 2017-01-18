@@ -23,7 +23,7 @@ import {IColumnDesc} from 'lineupjs/src/model/Column';
 function deriveColumns(columns: any[]): IColumnDesc[] {
   return columns.map((col) => {
     const desc: any = col.desc;
-    let r: any = {
+    const r: any = {
       column: col.desc.name
     };
     if (desc.color) {
@@ -128,23 +128,23 @@ export class LineUp extends AVisInstance implements IVisInstance {
       }
 
       this.lineup = new LineUpImpl(div, this.provider, this.options.lineup);
-      this.lineup.on(LineUpImpl.EVENT_SELECTION_CHANGED, (data_index) => {
+      this.lineup.on(LineUpImpl.EVENT_SELECTION_CHANGED, (dataIndex) => {
         let id = null;
-        if (data_index < 0) {
+        if (dataIndex < 0) {
           this.data.clear(hoverSelectionType);
         } else {
-          id = data[data_index]._id;
-          this.data.select(hoverSelectionType, [data_index]);
+          id = data[dataIndex]._id;
+          this.data.select(hoverSelectionType, [dataIndex]);
         }
         this.fire(hoverSelectionType, id);
       });
-      this.lineup.on(LineUpImpl.EVENT_MULTISELECTION_CHANGED, (data_indices) => {
-        if (data_indices.length === 0) {
+      this.lineup.on(LineUpImpl.EVENT_MULTISELECTION_CHANGED, (dataIndices) => {
+        if (dataIndices.length === 0) {
           this.data.clear(defaultSelectionType);
         } else {
-          this.data.select(defaultSelectionType, data_indices);
+          this.data.select(defaultSelectionType, dataIndices);
         }
-        this.fire(defaultSelectionType, data_indices.length === 0 ? null : data[data_indices[0]]._id);
+        this.fire(defaultSelectionType, dataIndices.length === 0 ? null : data[dataIndices[0]]._id);
       });
       this.provider.deriveDefault();
 
@@ -176,11 +176,11 @@ export class LineUp extends AVisInstance implements IVisInstance {
       return bak;
     }
     this.node.style.transform = `rotate(${rotate}deg)scale(${scale[0]},${scale[1]})`;
-    const new_ = { scale, rotate };
-    this.fire('transform', new_, bak);
+    const act = { scale, rotate };
+    this.fire('transform', act, bak);
     this.options.scale = scale;
     this.options.rotate = rotate;
-    return new_;
+    return act;
   }
 
   update() {
