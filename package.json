@@ -52,7 +52,7 @@
   "dependencies": {
     "phovea_core": "github:phovea/phovea_core#develop",
     "font-awesome": "4.6.3",
-    "lineupjs": "github:Caleydo/lineupjs#master",
+    "lineupjs": "1.0.0",
     "@types/d3": "3.5.36",
     "d3": "3.5.17"
   },
@@ -82,8 +82,8 @@
     "typedoc": "0.5.5",
     "typescript": "2.1.5",
     "url-loader": "0.5.7",
-    "webpack": "2.1.0-beta.28",
-    "webpack-dev-server": "2.1.0-beta.12",
+    "webpack": "2.2.0",
+    "webpack-dev-server": "2.2.0",
     "mkdirp": "0.5.1",
     "extract-loader": "0.1.0"
   }
