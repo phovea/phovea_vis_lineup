@@ -52,7 +52,7 @@
   "dependencies": {
     "phovea_core": "github:phovea/phovea_core#develop",
     "font-awesome": "4.6.3",
-    "lineupjs": "1.0.0",
+    "lineupjs": "github:Caleydo/lineupjs#master",
     "@types/d3": "3.5.36",
     "d3": "3.5.17"
   },
