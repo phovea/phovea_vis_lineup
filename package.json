@@ -50,7 +50,7 @@
     "dist": "mkdirp dist && cd build && tar cvzf ../dist/phovea_vis_lineup.tar.gz *"
   },
   "dependencies": {
-    "phovea_core": "github:phovea/phovea_core#develop",
+    "phovea_core": "github:phovea/phovea_core#thinkh/provenance_similarity",
     "font-awesome": "4.6.3",
     "lineupjs": "github:Caleydo/lineupjs#master",
     "@types/d3": "3.5.36",
