@@ -1,28 +1,30 @@
 language: node_js
-
 node_js:
 - 6
-
 addons:
   firefox: 49.0.1
-
 before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-
 script: npm run dist
-
-deploy:
-  provider: releases
-  api_key:
-    secure: TK9/P34Bi3WuppiDrBCwVcn41yCBwmILaU8hXTBzUPbT7TbeFIwsC6/4CtH85Z+ZrUve4S5pTmWRNf2dQDxWw3uYu7+bJuemV2J1LHG76mognj+TNEiYxfLQUt3Gql4W7C7FcI4Rlx5/uMN9wY1wro8TWUBMwT6jjSrUWIvK3GXoojd5bHvJx07XpjWl9wCon4D0ruZiFoM2mdeP23lbc2GckETi32oEKswnQXxkMACmxbPzoWbvkxH4aK8Bt2Rj2sl2TbPhVkN6DAkHGkGAvLI+2/aRfG27+oo3OKsaDjbuGABct8TfZccJ970CbQ8kbnCjYxstvqkg1JWjF0W67sX/flBZZOEUA5l0OLWo6HqMGMxm7/lEQhIdPMsRmvXL+HVOxkMrB2dda58QzxVwiZp+rRqUaeabPZp8Kl5xodGrVxsBvxe6zAbJ5jCtCSumG6+kLyKI00/kYlghqQNrgUw0ZsYJlQ34h3lo/24QpaeyDpQoCkGWQgtgqiXGpeKSu7bCnOqIqAy3nbT9Utwj7K8gIasTG5idosEAz/THMampNbGDuyxxc340sYGNMg9Bhm1g2ILWRdtV470p5hwBtIDTKi3/PAizEO26+Wh0zI47Sg3ao57avcbCsTmzbZUeA5J4bojmchhJCHX8su9cSCGh/2fJA/1eBIgEvOQ8LNE=
-  file: dist/phovea_vis_lineup.tar.gz
-  on:
-    tags: true
-
 notifications:
   slack:
-    secure: E8/1UIdHSczUbN+6i6gd1d5LM4vmLdwLQ30tpyjvnM0wvfDce76oPxLJAy240WJ5ybXRZUtNrttpVpt4tEXCy8aLFCmxD7s77rVloH+q1J8R/ptTFWZGhFGEujk1awEmVbzcWxJkV9/JENQaeGBKxwv8/EQwWwEkAb7p/+AJb9owmH88b3wUZUGHBWtbMiyyaF4Rm1Wg1stJB8Z1Ga7PRF4cqufTgcDdsCPVv9gAY+VxOIGqX/Vfuc9UWpUH8vq8lHUE7Inn5QS78kuFfSgLWga3H6Mu/Gko1XNlWk0QWWQBUvEZ6ZC6Wuo68KzvUjJHDTnx8WyfHue2JNHIslcX+eJq2WHLeEgM24VeNkILCGo/H/60NGHiSjrIv/Y9h6bQ9FDjo6TUyE4nbdPYN1RN9FQ5UbI9Y4Gi753H9mqnHWlEywBOzHxdZCAuz9Wh03CCF/blsvJ+Obbyo6Jrfe+g44jyi9kQdBNQ78qG6v4EXws8FiYao6x3PpgIwFix42Cpr+soAh5FpA3C1zHSAyZZpXF65/lrDl5yPNofK7Wy0B9bw+0I6Z/u7ZKFNVZXvYPGYvtUVcsALGBdmYc61+LCta36Po0KZseWVAlJj6QnOJDYzv0wvV/zsuf9A5KpYFGiqV9Q7zmtiO5FYF5sBy+lE7O9tHVO4O18IRndhRQgxhs=
+    secure: Vz1i0Y5+qByLe4LzKV+qKy0Nml4leas/+uW5MqBCJLQ46934e4NEJ+DRRjWXOwHl2gi0rSgqszltIj50+qF8LyVJsm6mBPurA2QCkv6G6oZFDRwUHl4zzNMV2Bz3gQ2rDvET3qfz3LIWYxAo9qR2nzJF6cRFqBt3YIq30AyGGf1YKAajV9i6YKkI7snqbfgIwvTNJsRn/mnLJkbkSAnvMZQ2ITCbM7X4xCqrC+UBxhn9jVuzvlh+YcK8whT8zp8dUinvecUlf9XHtkyD2FG2sl1oJb8U1OpMEUWY5vMLie/9RX7c18oKrc3TjcGSXkQeQeUB66KFowEIXNrR28tkdN+BenyO/+py112fD+IZTaEvwwZSWar//ftCcM7vkibwwO4bxQ0r1FoIyuEJrVISE4ILdPuL8NTpW2laUxyvWuV4TxF9GVwkqls+gsPoi6pNcHj9XW/ky94W1CoMD357YofPwWPgKCtTyKkIfZ5rjhzm6G9UOuvuf9b11LrNCHtzR0bkp+LepAFbFy39Bspq9uz7V5ONZmHX6dMgnGXSaoCwneCXtx9+WAt1mOngi9w1LE6C4XI2lX649XLCo1JuBrmyMcFVUYDL2MBqPMSXqISHdV1Hat1Ww9N9nZaSIWIwtcfKaYnLbt/CgfXvNSNYEO0XSPlwb5Nx1qE6ThBf0BQ=
     on_success: change
     on_failure: always
+deploy:
+  - provider: releases
+    api_key:
+      secure: P6uACb0jpxXVBtjZcsywqtOh93xYqweNkl0tcoYerqUJpyQ6ccKS8hEvrqnkh0ngG0hyGyTra9mqWObkq84Mly2hAdx2DT1SAoWX8AVJYAZddN0WTejzfzqXO+XuzVNwtrTu1Pw1zojYocSszRuHfUAubx2HxPZjQ3SVtN8+QXDLlWOLJwlMAgbMqo4sO6bZV4M3FVPYnDUfcY/03V2x6EkZA/k3DkvXEFhWeXdmaMVk9T5n+dOI4jhAEFv11x54YR0P6JNfkuzty20T2iGnAF8vRGIAs+/2Ju39anFdVSNfZx89YtohjKLMAolhkiffsxyybuk8RWBpk5oMBlCLM7SiWWryYe9kRuSNVQ0qbdgve9RiPp6qlQZZF8oPbEl8UyHSQB2JtEjqGYnj10icS7aExQgFe8puuuyDtdzO2xoxUyB42CAIE9L9JkV87fkcYOIi9g9KiHv0U8udIL7qviKvymzidZN/2uU7ceGy83GPsCCaANyHlDGwfWsDQPz+/wLaENTKi9XM+IVZvAx1PFS227bHit+wGUyppNTfkE2/nzGuE0yqbV8xZDNAT23mcHmg6QQojuXiblhjQsmy6VlNrs5EURJBPLbVp5fOv0mECpE1i9JBrmCGGezG7P5R6lqTMEtRxMe/loRSoxMBGl66dJ86tBMKd/HPF4HkgMo=
+    file: dist/phovea_vis_lineup.tar.gz
+    on:
+      tags: true
+      repo: phovea/phovea_vis_lineup
+  - provider: npm
+    email: samuel.gratzl@jku.at
+    api_key:
+      secure: JdD6IO2tJ4wz10XFvPGD2V8wjS/cElw1Cfm9yIvDRdaVSbeLO7WYwBB1XAVL4cj8C8ZJD+/dA2+6eULvZ8SyU5kmSZXYLqnQCOKlO0KndvjVXt5AZJKrcqSPhovKMgEblQuRelKcEaiF9O8dafqyneTJTGvOOHTHfF1G0S678xDi+Pl4/srFLEIZwb5usOrtXUuPz0rJKiEA9YZ3mm2XEWveLhFsvYXUODL6JfuU6/0BglzpwMMm32PqPeR6Zhco1dcXoR2MPVFxQIWClGd50tTb6H8t7SXQsSpZiFPbw1OwfoKKsHvpOTp2rQ+YTJ7dTfC97IuNW98STBACEhoXbPOE4nDtoLvBwVuBn7Wi2xbQLSkaywFHmEbzBHSA31hZS3WfQNsUbTC3ZQXr/kc4+8cSqkN3hFLPPKzpZN5iDyuxzoSxcOWc8S0dlZV2NHUWN/Yq9tIk4+ZTtiU8zGesE3ZZRXdKjWOW0xPYc0L1hSqgg3FLy0JEnFIpX+MM8KJMlNCdWYCW4OPYjFS/fnRfNUs7FdSEH+XOZHCg+G1G9G8f+xmW03ZmCAnXF6yjD2YI4zD8sj20zwewEd0xmPPl4u+Fvzz1jD8bUbFLCZx6WVZMZPOOR/XYNwWfTztkQ77sAKP9t52x7WlQkPYQGhRV+Aj2aLpC0fHUmf5ye6V1SMI=
+    on:
+      tags: true
+      repo: phovea/phovea_vis_lineup
