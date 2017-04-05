@@ -8,77 +8,75 @@ import './style.scss';
 import 'lineupjs/src/style.scss';
 import 'font-awesome/scss/font-awesome.scss';
 import {onDOMNodeRemoved, mixin} from 'phovea_core/src';
-import {ITable} from 'phovea_core/src/table';
 import {Range} from 'phovea_core/src/range';
+import {ITable} from 'phovea_core/src/table/ITable';
+import {
+  VALUE_TYPE_CATEGORICAL, VALUE_TYPE_INT, VALUE_TYPE_REAL,
+  ICategoricalValueTypeDesc, INumberValueTypeDesc
+} from 'phovea_core/src/datatype';
 import {defaultSelectionType, hoverSelectionType} from 'phovea_core/src/idtype';
-import {AVisInstance, IVisInstance, assignVis} from 'phovea_core/src/vis';
-import LineUpImpl from 'lineupjs/src/lineup';
+import {AVisInstance, IVisInstance, assignVis, IVisInstanceOptions} from 'phovea_core/src/vis';
+import LineUpImpl,{ILineUpConfig} from 'lineupjs/src/lineup';
 import {LocalDataProvider} from 'lineupjs/src/provider';
+import {IColumnDesc} from 'lineupjs/src/model/Column';
 
-function deriveColumns(columns: any[]) {
+function deriveColumns(columns: any[]): IColumnDesc[] {
   return columns.map((col) => {
-    var r: any = {
+    const desc: any = col.desc;
+    const r: any = {
       column: col.desc.name
     };
-    if (col.desc.color) {
-      r.color = col.desc.color;
-    } else if (col.desc.cssClass) {
-      r.cssClass = col.desc.cssClass;
+    if (desc.color) {
+      r.color = desc.color;
+    } else if (desc.cssClass) {
+      r.cssClass = desc.cssClass;
     }
 
     //use magic word to find extra attributes
-    if (col.desc.lineup) {
-      Object.keys(col.desc.lineup).forEach((k) => {
-        r[k] = col.desc.lineup[k];
-      });
+    if (desc.lineup) {
+      Object.assign(r, desc.lineup);
     }
-    var val = col.desc.value;
+    const val = col.desc.value;
     switch (val.type) {
-      case 'string':
-        r.type = 'string';
-        break;
-      case 'categorical':
+      case VALUE_TYPE_CATEGORICAL:
         r.type = 'categorical';
-        r.categories = col.desc.categories;
+        r.categories = (<ICategoricalValueTypeDesc>(val)).categories;
         break;
-      case 'real':
-      case 'int':
+      case VALUE_TYPE_INT:
+      case VALUE_TYPE_REAL:
         r.type = 'number';
-        r.domain = val.range;
+        r.domain = (<INumberValueTypeDesc>val).range;
         break;
       default:
         r.type = 'string';
         break;
     }
-    return r;
+    return <IColumnDesc>r;
   });
 }
 
-export interface ILineUpOptions {
+export interface ILineUpOptions extends IVisInstanceOptions {
   rowNames?: boolean;
   dump?: any;
-  lineup?: any;
+  lineup?: ILineUpConfig;
 
   sortCriteria?: {column: string, asc: boolean};
-
-  scale?: number[];
-  rotate?: number;
 }
 
 export class LineUp extends AVisInstance implements IVisInstance {
-  private options: ILineUpOptions = {
+  private readonly options: ILineUpOptions = {
     rowNames: false
   };
 
-  private _node: HTMLDivElement;
+  private readonly _node: HTMLDivElement;
   private lineup: LineUpImpl;
   private provider: LocalDataProvider;
 
-  constructor(public data: ITable, parent: Element, options: ILineUpOptions = {}) {
+  constructor(public readonly data: ITable, parent: Element, options: ILineUpOptions = {}) {
     super();
     mixin(this.options, options);
 
-    this._node = this.build();
+    this._node = this.build(parent);
     parent.appendChild(this._node);
     assignVis(this._node, this);
   }
@@ -92,13 +90,13 @@ export class LineUp extends AVisInstance implements IVisInstance {
     return this._node;
   }
 
-  private build() {
-    const div = document.createElement('div');
+  private build(parent: Element) {
+    const div = parent.ownerDocument.createElement('div');
     const rowNames = this.options.rowNames === true;
     const columns = deriveColumns(this.data.cols());
 
     if (rowNames) {
-      columns.unshift({type: 'string', label: 'Row', column: '_name'});
+      columns.unshift(<any>{type: 'string', label: 'Row', column: '_name'});
     }
 
     const listener = (event, act: Range) => {
@@ -130,23 +128,23 @@ export class LineUp extends AVisInstance implements IVisInstance {
       }
 
       this.lineup = new LineUpImpl(div, this.provider, this.options.lineup);
-      this.lineup.on('hoverChanged', (data_index) => {
-        var id = null;
-        if (data_index < 0) {
+      this.lineup.on(LineUpImpl.EVENT_SELECTION_CHANGED, (dataIndex) => {
+        let id = null;
+        if (dataIndex < 0) {
           this.data.clear(hoverSelectionType);
         } else {
-          id = data[data_index]._id;
-          this.data.select(hoverSelectionType, [data_index]);
+          id = data[dataIndex]._id;
+          this.data.select(hoverSelectionType, [dataIndex]);
         }
         this.fire(hoverSelectionType, id);
       });
-      this.lineup.on('multiSelectionChanged', (data_indices) => {
-        if (data_indices.length === 0) {
+      this.lineup.on(LineUpImpl.EVENT_MULTISELECTION_CHANGED, (dataIndices) => {
+        if (dataIndices.length === 0) {
           this.data.clear(defaultSelectionType);
         } else {
-          this.data.select(defaultSelectionType, data_indices);
+          this.data.select(defaultSelectionType, dataIndices);
         }
-        this.fire(defaultSelectionType, data_indices.length === 0 ? null : data[data_indices[0]]._id);
+        this.fire(defaultSelectionType, dataIndices.length === 0 ? null : data[dataIndices[0]]._id);
       });
       this.provider.deriveDefault();
 
@@ -169,7 +167,7 @@ export class LineUp extends AVisInstance implements IVisInstance {
     return div;
   }
 
-  transform(scale?: number[], rotate?: number) {
+  transform(scale?: [number, number], rotate?: number) {
     const bak = {
       scale: this.options.scale || [1, 1],
       rotate: this.options.rotate || 0
@@ -178,11 +176,11 @@ export class LineUp extends AVisInstance implements IVisInstance {
       return bak;
     }
     this.node.style.transform = `rotate(${rotate}deg)scale(${scale[0]},${scale[1]})`;
-    const new_ = { scale, rotate };
-    this.fire('transform', new_, bak);
+    const act = { scale, rotate };
+    this.fire('transform', act, bak);
     this.options.scale = scale;
     this.options.rotate = rotate;
-    return new_;
+    return act;
   }
 
   update() {
@@ -194,4 +192,4 @@ export class LineUp extends AVisInstance implements IVisInstance {
 
 export function create(data: ITable, parent: Element, options?: ILineUpOptions) {
   return new LineUp(data, parent, options);
-};
+}
