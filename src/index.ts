@@ -76,7 +76,7 @@ export class LineUp extends AVisInstance implements IVisInstance {
     super();
     mixin(this.options, options);
 
-    this._node = this.build();
+    this._node = this.build(parent);
     parent.appendChild(this._node);
     assignVis(this._node, this);
   }
@@ -90,8 +90,8 @@ export class LineUp extends AVisInstance implements IVisInstance {
     return this._node;
   }
 
-  private build() {
-    const div = document.createElement('div');
+  private build(parent: Element) {
+    const div = parent.ownerDocument.createElement('div');
     const rowNames = this.options.rowNames === true;
     const columns = deriveColumns(this.data.cols());
 
