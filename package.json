@@ -2,7 +2,7 @@
   "name": "phovea_vis_lineup",
   "description": "A visualization plugin for tables using LineUp.js",
   "homepage": "http://www.caleydo.org/tools/lineup/",
-  "version": "0.1.0",
+  "version": "0.1.1-SNAPSHOT",
   "author": {
     "name": "The Caleydo Team",
     "email": "contact@caleydo.org",
@@ -50,9 +50,9 @@
     "dist": "mkdirp dist && cd build && tar cvzf ../dist/phovea_vis_lineup.tar.gz *"
   },
   "dependencies": {
-    "phovea_core": "0.1.0",
+    "phovea_core": "github:phovea/phovea_core#develop",
     "font-awesome": "4.6.3",
-    "lineupjs": "1.1.1",
+    "lineupjs": "github:Caleydo/lineupjs#master",
     "@types/d3": "3.5.36",
     "d3": "3.5.17"
   },
